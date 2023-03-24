@@ -1,4 +1,4 @@
-# Configuring OpenID Connect in Azure 
+# Configuring OpenID Connect in Azure  
 name: Run Azure Login with OIDC
 on: [push]
 
