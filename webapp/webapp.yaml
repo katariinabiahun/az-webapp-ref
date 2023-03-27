@@ -1,0 +1,7 @@
+webapp:
+  name: linuxapp
+  service_plan:
+    service_plan1:
+      name: appserviceplan
+      os_type: Linux
+      sku_name: P1v2
