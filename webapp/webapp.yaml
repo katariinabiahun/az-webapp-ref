@@ -1,5 +1,5 @@
 webapp:
-  name: thisismyapp
+  name: icelabwebapp
   service_plan:
     service_plan1:
       name: appserviceplan
