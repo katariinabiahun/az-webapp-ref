@@ -28,7 +28,7 @@ resource "azurerm_service_plan" "example" {
 
   name                = each.value.serv_plan_value.name
   location            = var.location
-  resource_group_name = azurerm_resource_group.example[0].name
+  resource_group_name = var.resource_group_name
   os_type             = each.value.serv_plan_value.os_type
   sku_name            = each.value.serv_plan_value.sku_name
 }
@@ -37,7 +37,7 @@ resource "azurerm_linux_web_app" "example" {
   for_each = local.webapp
 
   name                = each.value.web_app_value.name
-  resource_group_name = azurerm_resource_group.example[0].name
+  resource_group_name = var.resource_group_name
   location            = var.location
   service_plan_id     = local.serv_plan_id[each.value.serv_plan_value.name]
 
