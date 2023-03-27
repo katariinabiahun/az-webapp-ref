@@ -1,4 +1,4 @@
 
-output "webapp" {
+output "mywebapp" {
   value = local.webapp
 }
