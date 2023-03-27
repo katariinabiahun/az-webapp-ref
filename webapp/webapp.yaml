@@ -1,5 +1,5 @@
 webapp:
-  name: linuxapp
+  name: thisismyapp
   service_plan:
     service_plan1:
       name: appserviceplan
