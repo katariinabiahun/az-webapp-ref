@@ -1,16 +1,13 @@
 name: Terraform
 
-on:
-  pull_request:
-    branches: [ master ]
-
-env:
-  TF_IN_AUTOMATION: true
+on: [push]
 
 jobs:
   terraform:
     name: Run Terraform
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
