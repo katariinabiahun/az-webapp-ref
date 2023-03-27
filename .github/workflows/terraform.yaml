@@ -23,16 +23,16 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform -chdir=./test init
+        run: terraform -chdir=./webapp init
 
       - name: Terraform Validate
         id: validate
-        run: terraform -chdir=./test validate
+        run: terraform -chdir=./webapp validate
 
       - name: Terraform Plan
         id: plan
-        run: terraform -chdir=./test plan
+        run: terraform -chdir=./webapp plan
 
       - name: Terraform Apply
         id: apply
-        run: terraform -chdir=./test apply -auto-approve
+        run: terraform -chdir=./webapp apply -auto-approve
