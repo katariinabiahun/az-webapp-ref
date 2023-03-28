@@ -6,13 +6,6 @@ terraform {
     }
   }
 
-  cloud {
-    organization = "pipeline-with-github-actions"
-
-    workspaces {
-      name = "github-actions"
-    }
-  }
 }
 
 provider "azurerm" {
