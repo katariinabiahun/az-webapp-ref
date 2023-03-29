@@ -1,0 +1,33 @@
+vnet:
+  name: icelabvnet
+  address_space:
+    - 10.5.0.0/16
+  snet:
+    simple-test-subnet1:
+      private_link_service_network_policies_enabled: false
+      address_prefixes:
+        - "10.5.1.0/24"
+      service_endpoints:
+        - "Microsoft.Sql"
+  public_ip:
+    example-api:
+      sku: Standard
+      allocation_method: Static
+  lb:
+    example-lb:
+      sku: Standard
+  private_link_service:
+    example-privatelink:
+      auto_approval_subscription_ids:
+        - "00000000-0000-0000-0000-000000000000"
+      visibility_subscription_ids:
+        - "00000000-0000-0000-0000-000000000000"
+      nat_ip_configuration:
+        primary:
+          private_ip_address: "10.5.1.17"
+          private_ip_address_version: IPv4
+          primary: true
+        secondary:
+          private_ip_address: "10.5.1.18"
+          private_ip_address_version: IPv4
+          primary: false

@@ -1,10 +1,20 @@
 locals {
-  webapps = yamldecode(file("webapp/webapp.yaml"))
+  common = {
+    location            = var.location
+    resource_group_name = var.resource_group_name
+  }
 }
 
-module "terraform_azure_vnet" {
-  source = "../../"
+module "tf_az_api" {
+  source = "./webapp"
 
-  webapps = local.webapps
+  # location            = var.location
+  # resource_group_name = var.resource_group_name
+  common = local.common
+}
 
+module "vnet" {
+  source = "./vnet"
+
+  common = local.common
 }
