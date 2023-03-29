@@ -31,16 +31,16 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform -chdir=./webapp init
+        run: terraform init
 
       - name: Terraform Validate
         id: validate
-        run: terraform -chdir=./webapp validate
+        run: terraform validate
 
       - name: Terraform Plan
         id: plan
-        run: terraform -chdir=./webapp plan
+        run: terraform plan
 
       - name: Terraform Apply
         id: apply
-        run: terraform -chdir=./webapp apply -auto-approve
+        run: terraform apply -auto-approve
