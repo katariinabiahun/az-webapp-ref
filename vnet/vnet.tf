@@ -140,5 +140,4 @@ resource "azurerm_private_link_service" "example" {
       primary                    = nat_ip_configuration.value.nat_value.primary
     }
   }
-
 }

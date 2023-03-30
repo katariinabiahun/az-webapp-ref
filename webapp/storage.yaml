@@ -1,0 +1,20 @@
+storage_account:
+  name: stormewbappice
+  account_tier: Standard
+  account_replication_type: LRS
+  account_kind: StorageV2
+  static_website:
+    webpages:
+      index_document: index.html
+      error_404_document: 404.html
+  storage_blob:
+    index.html:
+      storage_container_name: $web
+      type: Block
+      source: "C:/Users/Katsiaryna.Biahun/Desktop/ice/webapp/mywebsite/index.html"
+      content_type: "text/html"
+    404.html:
+      storage_container_name: $web
+      type: Block
+      source: "C:/Users/Katsiaryna.Biahun/Desktop/ice/webapp/mywebsite/404.html"
+      content_type: "text/html"

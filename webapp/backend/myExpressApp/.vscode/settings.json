@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "undefined/subscriptions/a3b02975-5b22-44f2-a6cb-d8c6c0e50930/resourceGroups/AppServiceQS-rg/providers/Microsoft.Web/sites/myfinallygoodwebapp",
+  "appService.deploySubpath": "."
+}

@@ -1,7 +1,10 @@
 webapp:
   name: icelabwebapp
+  worker_count: 3
   service_plan:
     service_plan1:
       name: appserviceplan
       os_type: Linux
       sku_name: P1v2
+      worker_count: 2
+      per_site_scaling_enabled: true

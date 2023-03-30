@@ -24,6 +24,9 @@ resource "azurerm_service_plan" "example" {
   resource_group_name = var.common.resource_group_name
   os_type             = each.value.serv_plan_value.os_type
   sku_name            = each.value.serv_plan_value.sku_name
+
+  worker_count             = try(each.value.serv_plan_value.worker_count, null)
+  per_site_scaling_enabled = try(each.value.serv_plan_value.per_site_scaling_enabled, null)
 }
 
 resource "azurerm_linux_web_app" "example" {
@@ -34,5 +37,7 @@ resource "azurerm_linux_web_app" "example" {
   location            = var.common.location
   service_plan_id     = local.serv_plan_id[each.value.serv_plan_value.name]
 
-  site_config {}
+  site_config {
+    worker_count = try(each.value.web_app_value.worker_count, null)
+  }
 }
