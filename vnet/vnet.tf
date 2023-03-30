@@ -64,11 +64,7 @@ locals {
     ]
   ]) : v.nat_name => v }
 
-  #pip_id = { for k, v in azurerm_public_ip.example : v.name => v.id }
-  #snet_ids = { for k, v in azurerm_subnet.example : v.name => v.id }
 }
-
-#optional try(each.value.snet_value.service_endpoints, null)
 
 resource "azurerm_virtual_network" "example" {
   for_each = local.vnet
@@ -86,8 +82,8 @@ resource "azurerm_subnet" "example" {
   resource_group_name                           = var.common.resource_group_name
   virtual_network_name                          = each.value.vnet_value.name
   address_prefixes                              = each.value.snet_value.address_prefixes
-  private_link_service_network_policies_enabled = each.value.snet_value.private_link_service_network_policies_enabled
-  service_endpoints                             = each.value.snet_value.service_endpoints
+  private_link_service_network_policies_enabled = try(each.value.snet_value.private_link_service_network_policies_enabled, null)
+  service_endpoints                             = try(each.value.snet_value.service_endpoints, null)
 
   depends_on = [
     azurerm_virtual_network.example
@@ -98,7 +94,7 @@ resource "azurerm_public_ip" "example" {
   for_each = local.pip
 
   name                = each.key
-  sku                 = each.value.pip_value.sku
+  sku                 = try(each.value.pip_value.sku, null)
   location            = var.common.location
   resource_group_name = var.common.resource_group_name
   allocation_method   = each.value.pip_value.allocation_method
@@ -108,12 +104,12 @@ resource "azurerm_lb" "example" {
   for_each = local.lb
 
   name                = each.key
-  sku                 = each.value.lb_value.sku
+  sku                 = try(each.value.lb_value.sku, null)
   location            = var.common.location
   resource_group_name = var.common.resource_group_name
 
   dynamic "frontend_ip_configuration" {
-    for_each = local.pip
+    for_each = try(local.pip, {})
 
     content {
       name                 = frontend_ip_configuration.value.pip_name
@@ -129,8 +125,8 @@ resource "azurerm_private_link_service" "example" {
   resource_group_name = var.common.resource_group_name
   location            = var.common.location
 
-  auto_approval_subscription_ids              = each.value.pvt_link_svc_value.auto_approval_subscription_ids
-  visibility_subscription_ids                 = each.value.pvt_link_svc_value.visibility_subscription_ids
+  auto_approval_subscription_ids              = try(each.value.pvt_link_svc_value.auto_approval_subscription_ids, [])
+  visibility_subscription_ids                 = try(each.value.pvt_link_svc_value.visibility_subscription_ids, [])
   load_balancer_frontend_ip_configuration_ids = [azurerm_lb.example[keys(local.lb)[0]].frontend_ip_configuration.0.id]
 
   dynamic "nat_ip_configuration" {
