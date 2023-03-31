@@ -24,3 +24,44 @@ jobs:
              inlineScript: |
                Get-AzResourceGroup
              azPSVersion: "latest"
+  terraform:
+    name: Run Terraform
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check -diff -recursive
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
