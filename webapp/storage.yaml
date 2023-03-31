@@ -11,11 +11,11 @@ storage_account:
     index.html:
       storage_container_name: $web
       type: Block
-      source: file://github.com/katariinabiahun/ice/blob/e1be76ff3ca2b9ea77c28bcbdd1537bb91d15737/webapp/mywebsite/index.html
+      source: webapp/mywebsite/index.html
       content_type: "text/html"
     404.html:
       storage_container_name: $web
       type: Block
-      source: file://github.com/katariinabiahun/ice/blob/e1be76ff3ca2b9ea77c28bcbdd1537bb91d15737/webapp/mywebsite/404.html
+      source: http://github.com/katariinabiahun/ice/blob/e1be76ff3ca2b9ea77c28bcbdd1537bb91d15737/webapp/mywebsite/404.html
       content_type: "text/html"
 
