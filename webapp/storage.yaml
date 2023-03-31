@@ -11,10 +11,10 @@ storage_account:
     index.html:
       storage_container_name: $web
       type: Block
-      source: "C:/Users/Katsiaryna.Biahun/Desktop/ice/webapp/mywebsite/index.html"
+      source: "./mywebsite/index.html"
       content_type: "text/html"
     404.html:
       storage_container_name: $web
       type: Block
-      source: "C:/Users/Katsiaryna.Biahun/Desktop/ice/webapp/mywebsite/404.html"
+      source: "./mywebsite/404.html"
       content_type: "text/html"
