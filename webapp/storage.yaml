@@ -18,3 +18,4 @@ storage_account:
       type: Block
       source: "https://github.com/katariinabiahun/ice/blob/main/webapp/mywebsite/404.html"
       content_type: "text/html"
+
