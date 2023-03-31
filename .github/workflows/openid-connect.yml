@@ -25,6 +25,7 @@ jobs:
                Get-AzResourceGroup
              azPSVersion: "latest"
   terraform:
+    needs: Windows-latest
     name: Run Terraform
     runs-on: ubuntu-latest
 
