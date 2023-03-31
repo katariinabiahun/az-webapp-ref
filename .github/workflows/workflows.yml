@@ -6,7 +6,6 @@ permissions:
       contents: read
 
 jobs:
-
   OpenID_Connect:
       environment: Production
       runs-on: windows-latest
