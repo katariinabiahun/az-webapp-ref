@@ -1,4 +1,4 @@
-name: Run Azure Login with OpenID Connect and PowerShell
+name: Run Azure Login with OpenID Connect and apply infrastructure
 on: [push]
 
 permissions:
@@ -6,7 +6,7 @@ permissions:
       contents: read
 
 jobs:
-  Windows-latest:
+  OpenID_Connect:
       environment: Production
       runs-on: windows-latest
       steps:
@@ -25,7 +25,7 @@ jobs:
                Get-AzResourceGroup
              azPSVersion: "latest"
   terraform:
-    needs: Windows-latest
+    needs: OpenID_Connect
     name: Run Terraform
     runs-on: ubuntu-latest
 
