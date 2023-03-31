@@ -40,4 +40,10 @@ resource "azurerm_linux_web_app" "example" {
   site_config {
     worker_count = try(each.value.web_app_value.worker_count, null)
   }
+
+  app_settings = {
+    APPINSIGHTS_INSTRUMENTATIONKEY             = azurerm_application_insights.example[keys(local.insights)[0]].instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING      = azurerm_application_insights.example[keys(local.insights)[0]].connection_string
+    ApplicationInsightsAgent_EXTENSION_VERSION = lookup(local.app_insights.application_insights.app_sett, "extension_version")
+  }
 }

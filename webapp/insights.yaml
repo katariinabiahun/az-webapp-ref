@@ -1,0 +1,9 @@
+application_insights:
+  name: tf-test-appinsights
+  application_type: web
+  app_sett:
+    extension_version: "~3"
+  log_analytics_workspace:
+    workspace-test:
+      sku: PerGB2018
+      retention_in_days: 30
