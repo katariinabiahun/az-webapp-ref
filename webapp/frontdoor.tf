@@ -78,7 +78,7 @@ locals {
         ]
       ]
     ]
-  ]) : join("-", [v.fpol_name, v.crule_name, v.matchcond_name]) => v }
+  ]) : join("-", [v.fpol_name, v.crule_name, v.matchcond_name, v.mrule_name]) => v }
 
   fd_security_policy = { for v in flatten([for frontdoor_name, frontdoor_value in local.frontdoor :
     [for secpol_name, secpol_value in try(frontdoor_value.security_policy, {}) :
