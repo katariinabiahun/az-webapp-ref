@@ -4,14 +4,18 @@ locals {
 
   webapp = { for k, v in flatten([for web_app_name, web_app_value in local.webapps :
     [for serv_plan_name, serv_plan_value in try(web_app_value.service_plan, {}) :
-      {
-        web_app_name    = web_app_name
-        web_app_value   = web_app_value
-        serv_plan_name  = serv_plan_name
-        serv_plan_value = serv_plan_value
-      }
+      [for connstr_name, connstr_value in try(serv_plan_value.connconnection_string, {}) :
+        {
+          web_app_name    = web_app_name
+          web_app_value   = web_app_value
+          serv_plan_name  = serv_plan_name
+          serv_plan_value = serv_plan_value
+          connstr_name    = connstr_name
+          connstr_value   = connstr_value
+        }
+      ]
     ]
-  ]) : join("-", [v.web_app_name, v.serv_plan_name]) => v }
+  ]) : join("-", [v.web_app_name, v.serv_plan_name, v.connstr_name]) => v }
 
   serv_plan_id = { for k, v in azurerm_service_plan.example : v.name => v.id }
 }
@@ -45,5 +49,16 @@ resource "azurerm_linux_web_app" "example" {
     APPINSIGHTS_INSTRUMENTATIONKEY             = azurerm_application_insights.example[keys(local.insights)[0]].instrumentation_key
     APPLICATIONINSIGHTS_CONNECTION_STRING      = azurerm_application_insights.example[keys(local.insights)[0]].connection_string
     ApplicationInsightsAgent_EXTENSION_VERSION = lookup(local.app_insights.application_insights.app_sett, "extension_version")
+  }
+
+  #service bus
+  dynamic "connection_string" {
+    for_each = local.webapp
+
+    content {
+      name  = connection_string.value.connstr_value.name
+      type  = connection_string.value.connstr_value.type
+      value = azurerm_servicebus_queue_authorization_rule.example[keys(local.srvbus_queue)[0]].primary_connection_string
+    }
   }
 }

@@ -1,12 +1,12 @@
 frontdoor:
   profile:
-    name: example-profile
-    sku_name: Premium_AzureFrontDoor
+    example-profile:
+      sku_name: Premium_AzureFrontDoor
   endpoint:
-    name: example-endpoint
+    example-endpoint:
+      enabled: true
   origin_group:
-    name: example-originGroup
-    load_balancing:
+    example-originGroup:
       additional_latency_in_milliseconds: 0
       sample_size: 16
       successful_samples_required: 3
@@ -28,108 +28,107 @@ frontdoor:
       priority: 1
       weight: 1
   route:
-    name: example-route
-    enabled: true
-    forwarding_protocol: "HttpsOnly"
-    https_redirect_enabled: true
-    patterns_to_match:
-      - "/*"
-    supported_protocols:
-      - "Http"
-      - "Https"
-    cache:
-      query_string_caching_behavior: "IgnoreSpecifiedQueryStrings"
-      query_strings:
-        - "account"
-        - "settings"
-      compression_enabled: true
-      content_types_to_compress:
-        - "text/html"
-        - "text/javascript"
-        - "text/xml"
+    example-route:
+      enabled: true
+      forwarding_protocol: "HttpsOnly"
+      https_redirect_enabled: true
+      patterns_to_match:
+        - "/*"
+      supported_protocols:
+        - "Http"
+        - "Https"
+      cache:
+        cache1:
+          query_string_caching_behavior: "IgnoreSpecifiedQueryStrings"
+          query_strings:
+            - "account"
+            - "settings"
+          compression_enabled: true
+          content_types_to_compress:
+            - "text/html"
+            - "text/javascript"
+            - "text/xml"
   firewall_policy:
-    name: examplecdnfdwafpolicy
-    enabled: true
-    mode: Prevention
-    redirect_url: "https://www.contoso.com"
-    custom_block_response_status_code: 403
-    custom_block_response_body: "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
-    custom_rule:
-      Rule1:
-        enabled: true
-        priority: 1
-        rate_limit_duration_in_minutes: 1
-        rate_limit_threshold: 10
-        type: MatchRule
-        action: Block
-        match_condition:
-          match_variable: RemoteAddr
-          operator: IPMatch
-          negation_condition: false
-          match_values:
-            - "10.0.1.0/24"
-            - "10.0.0.0/24"
-      Rule2:
-        enabled: true
-        priority: 2
-        rate_limit_duration_in_minutes: 1
-        rate_limit_threshold: 10
-        type: MatchRule
-        action: Block
-        match_condition:
-          match_condition1:
-            match_variable: RemoteAddr
-            operator: IPMatch
-            negation_condition: false
-            match_values:
-              - "192.168.1.0/24"
-          match_condition2:
-            match_variable: "RequestHeader"
-            selector: "UserAgent"
-            operator: "Contains"
-            negation_condition: false
-            match_values:
-              - "windows"
-            transforms:
-              - "Lowercase"
-              -  "Trim"
-    managed_rule:
-      managed_rule1:
-        type: DefaultRuleSet
-        version: "1.0"
-        action: Block
-        exclusion:
-          match_variable: QueryStringArgNames
-          operator: Equals
-          selector: not_suspicious
-        override:
-          override1:
-            rule_group_name: PHP
-            rule:
-              rule_id: 933100
-              enabled: false
-              action: Block
-          override2:
-            rule_group_name: SQLI
-            exclusion:
-              match_variable: QueryStringArgNames
-              operator: Equals
-              selector: really_not_suspicious
-            rule:
-              rule_id: 942200
-              action: Block
-              exclusion:
-                match_variable: QueryStringArgNames
-                operator: Equals
-                selector: innocent
-      managed_rule2:
-        type: Microsoft_BotManagerRuleSet
-        version: "1.0"
-        action: Log
+    excdnfdwafpolicy:
+      enabled: true
+      mode: Prevention
+      redirect_url: "https://www.contoso.com"
+      custom_block_response_status_code: 403
+      custom_block_response_body: "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
+      custom_rule:
+        Rule1:
+          enabled: true
+          priority: 1
+          rate_limit_duration_in_minutes: 1
+          rate_limit_threshold: 10
+          type: MatchRule
+          action: Block
+          match_condition:
+            match_condition1:
+              match_variable: RemoteAddr
+              operator: IPMatch
+              negation_condition: false
+              match_values:
+                - "10.0.1.0/24"
+                - "10.0.0.0/24"
+        Rule2:
+          enabled: true
+          priority: 2
+          rate_limit_duration_in_minutes: 1
+          rate_limit_threshold: 10
+          type: MatchRule
+          action: Block
+          match_condition:
+            match_condition1:
+              match_variable: RemoteAddr
+              operator: IPMatch
+              negation_condition: false
+              match_values:
+                - "192.168.1.0/24"
+            match_condition2:
+              match_variable: "RequestHeader"
+              selector: "UserAgent"
+              operator: "Contains"
+              negation_condition: false
+              match_values:
+                - "windows"
+              transforms:
+                - "Lowercase"
+                -  "Trim"
+      managed_rule:
+        # managed_rule1:
+        #   type: DefaultRuleSet
+        #   version: "1.0"
+        #   action: Block
+        #   exclusion:
+        #     match_variable: QueryStringArgNames
+        #     operator: Equals
+        #     selector: not_suspicious
+        #   override:
+        #     override1:
+        #       rule_group_name: PHP
+        #       rule:
+        #         rule_id: 933100
+        #         enabled: false
+        #         action: Block
+        #     override2:
+        #       rule_group_name: SQLI
+        #       exclusion:
+        #         match_variable: QueryStringArgNames
+        #         operator: Equals
+        #         selector: really_not_suspicious
+        #       rule:
+        #         rule_id: 942200
+        #         action: Block
+        #         exclusion:
+        #           match_variable: QueryStringArgNames
+        #           operator: Equals
+        #           selector: innocent
+        managed_rule2:
+          type: Microsoft_BotManagerRuleSet
+          version: "1.0"
+          action: Log
   security_policy:
-    name: Example-Security-Policy
-    security_policies:
-      firewall:
-        association:
-          patterns_to_match:
-            - "/*"
+    Example-Security-Policy:
+      patterns_to_match:
+        - "/*"

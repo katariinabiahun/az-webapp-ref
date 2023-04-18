@@ -1,0 +1,12 @@
+servicebus:
+  namespace:
+    srvbusnamespaceicelab:
+      sku: Standard
+  queue:
+    tfex_servicebus_queue:
+      enable_partitioning: true
+  auth_rule:
+    examplerule:
+      listen: true
+      send: true
+      manage: true #if `manage` is set both `listen` and `send` must be set to true too

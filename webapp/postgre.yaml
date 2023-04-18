@@ -1,0 +1,20 @@
+postgresql:
+  server:
+    postgresrv1lab:
+      sku_name: GP_Gen5_4
+      storage_mb: 5120
+      backup_retention_days: 7
+      geo_redundant_backup_enabled: false
+      auto_grow_enabled: true
+      administrator_login: "psqladmin"
+      administrator_login_password: "H@Sh1CoR3!"
+      version: "11"
+      ssl_enforcement_enabled: true
+  database:
+    exampledb:
+      charset: "UTF8"
+      collation: "English_United States.1252"
+  firewall_rule:
+    office:
+      start_ip_address: "40.112.8.12"
+      end_ip_address: "40.112.8.12"

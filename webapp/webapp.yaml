@@ -8,3 +8,7 @@ webapp:
       sku_name: P1v2
       worker_count: 2
       per_site_scaling_enabled: true
+      connconnection_string:
+        connstr1:
+          name: servicebusconnstr
+          type: ServiceBus
