@@ -29,12 +29,12 @@ resource "azurerm_postgresql_server" "example" {
   location                     = var.common.location
   resource_group_name          = var.common.resource_group_name
   sku_name                     = each.value.server_value.sku_name
-  storage_mb                   = each.value.server_value.storage_mb
-  backup_retention_days        = each.value.server_value.backup_retention_days
-  geo_redundant_backup_enabled = each.value.server_value.geo_redundant_backup_enabled
-  auto_grow_enabled            = each.value.server_value.auto_grow_enabled
-  administrator_login          = each.value.server_value.administrator_login
-  administrator_login_password = each.value.server_value.administrator_login_password
+  storage_mb                   = try(each.value.server_value.storage_mb, null)
+  backup_retention_days        = try(each.value.server_value.backup_retention_days, null)
+  geo_redundant_backup_enabled = try(each.value.server_value.geo_redundant_backup_enabled, null)
+  auto_grow_enabled            = try(each.value.server_value.auto_grow_enabled, null)
+  administrator_login          = try(each.value.server_value.administrator_login, null)
+  administrator_login_password = try(each.value.server_value.administrator_login_password, null)
   version                      = each.value.server_value.version
   ssl_enforcement_enabled      = each.value.server_value.ssl_enforcement_enabled
 }

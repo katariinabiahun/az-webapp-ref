@@ -9,3 +9,7 @@ output "srvbus_connstr" {
 output "storage" {
   value = azurerm_storage_account.example[keys(local.blob_stor)[0]].primary_web_host #"stormewbappice.z6.web.core.windows.net/"
 }
+
+output "waf_policy" {
+  value = local.fd_firewall_policy
+}

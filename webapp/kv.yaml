@@ -1,0 +1,23 @@
+key_vault:
+  name: exkvicalab
+  sku_name: premium
+  soft_delete_retention_days: 7
+  key_permissions:
+    - "Create"
+    - "Get"
+  secret_permissions:
+    - "Set"
+    - "Get"
+    - "Delete"
+    - "Purge"
+    - "Recover"
+  secret:
+    secret1:
+      name: mypostgredbkvsecrt
+      value: "H@Sh1CoR3!"
+    secret2:
+      name: secretkvicelabtwo
+      value: szechuann
+    secret3:
+      name: secretkvicelabthree
+      value: szechuannn

@@ -16,3 +16,5 @@ variable "common" {
     resource_group_name = string
   })
 }
+
+variable "subnet_id" {}

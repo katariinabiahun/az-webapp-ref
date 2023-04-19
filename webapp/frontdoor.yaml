@@ -17,7 +17,7 @@ frontdoor:
       certificate_name_check_enabled: false
       http_port: 80
       https_port: 443
-      priority: 1
+      #priority: 1
       weight: 1
     webapp:
       name: example-origin-webapp
@@ -25,7 +25,7 @@ frontdoor:
       certificate_name_check_enabled: false
       http_port: 80
       https_port: 443
-      priority: 1
+      #priority: 1
       weight: 1
   route:
     example-route:
@@ -96,35 +96,7 @@ frontdoor:
                 - "Lowercase"
                 -  "Trim"
       managed_rule:
-        # managed_rule1:
-        #   type: DefaultRuleSet
-        #   version: "1.0"
-        #   action: Block
-        #   exclusion:
-        #     match_variable: QueryStringArgNames
-        #     operator: Equals
-        #     selector: not_suspicious
-        #   override:
-        #     override1:
-        #       rule_group_name: PHP
-        #       rule:
-        #         rule_id: 933100
-        #         enabled: false
-        #         action: Block
-        #     override2:
-        #       rule_group_name: SQLI
-        #       exclusion:
-        #         match_variable: QueryStringArgNames
-        #         operator: Equals
-        #         selector: really_not_suspicious
-        #       rule:
-        #         rule_id: 942200
-        #         action: Block
-        #         exclusion:
-        #           match_variable: QueryStringArgNames
-        #           operator: Equals
-        #           selector: innocent
-        managed_rule2:
+        managed_rule1:
           type: Microsoft_BotManagerRuleSet
           version: "1.0"
           action: Log

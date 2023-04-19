@@ -85,6 +85,16 @@ resource "azurerm_subnet" "example" {
   private_link_service_network_policies_enabled = try(each.value.snet_value.private_link_service_network_policies_enabled, null)
   service_endpoints                             = try(each.value.snet_value.service_endpoints, null)
 
+  #for webapp
+  delegation {
+    name = "example-delegation"
+
+    service_delegation {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+
   depends_on = [
     azurerm_virtual_network.example
   ]

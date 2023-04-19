@@ -29,10 +29,6 @@ resource "azurerm_servicebus_namespace" "example" {
   location            = var.common.location
   resource_group_name = var.common.resource_group_name
   sku                 = each.value.namespace_value.sku
-
-  tags = {
-    source = "terraform"
-  }
 }
 
 resource "azurerm_servicebus_queue" "example" {
@@ -41,7 +37,7 @@ resource "azurerm_servicebus_queue" "example" {
   name         = each.value.queue_name
   namespace_id = azurerm_servicebus_namespace.example[keys(local.srvbus_queue)[0]].id
 
-  enable_partitioning = each.value.queue_value.enable_partitioning
+  enable_partitioning = try(each.value.queue_value.enable_partitioning, null)
 }
 
 resource "azurerm_servicebus_queue_authorization_rule" "example" {
@@ -50,7 +46,7 @@ resource "azurerm_servicebus_queue_authorization_rule" "example" {
   name     = each.value.auth_rule_name
   queue_id = azurerm_servicebus_queue.example[keys(local.srvbus_queue)[0]].id
 
-  listen = each.value.auth_rule_value.listen
-  send   = each.value.auth_rule_value.send
-  manage = each.value.auth_rule_value.manage
+  listen = try(each.value.auth_rule_value.listen, null)
+  send   = try(each.value.auth_rule_value.send, null)
+  manage = try(each.value.auth_rule_value.manage, null)
 }

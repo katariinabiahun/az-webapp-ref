@@ -10,7 +10,8 @@ module "tf_az_api" {
 
   # location            = var.location
   # resource_group_name = var.resource_group_name
-  common = local.common
+  common    = local.common
+  subnet_id = module.vnet.subnet_id
 }
 
 module "vnet" {
