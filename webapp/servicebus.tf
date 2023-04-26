@@ -29,6 +29,7 @@ resource "azurerm_servicebus_namespace" "example" {
   location            = var.common.location
   resource_group_name = var.common.resource_group_name
   sku                 = each.value.namespace_value.sku
+  capacity            = each.value.namespace_value.capacity
 }
 
 resource "azurerm_servicebus_queue" "example" {
@@ -49,4 +50,16 @@ resource "azurerm_servicebus_queue_authorization_rule" "example" {
   listen = try(each.value.auth_rule_value.listen, null)
   send   = try(each.value.auth_rule_value.send, null)
   manage = try(each.value.auth_rule_value.manage, null)
+}
+
+resource "azurerm_servicebus_namespace_network_rule_set" "example" {
+  namespace_id = azurerm_servicebus_namespace.example[keys(local.srvbus_queue)[0]].id
+
+  default_action                = "Deny"
+  public_network_access_enabled = false
+
+  network_rules {
+    subnet_id                            = var.subnet_id_privlink
+    ignore_missing_vnet_service_endpoint = false
+  }
 }

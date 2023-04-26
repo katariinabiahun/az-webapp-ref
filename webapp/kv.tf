@@ -41,10 +41,10 @@ resource "azurerm_key_vault" "example" {
   }
 }
 
-resource "azurerm_key_vault_secret" "example" {
-  for_each = local.kv_secret
+# resource "azurerm_key_vault_secret" "example" {
+#   for_each = local.kv_secret
 
-  name         = each.value.secret_value.name
-  value        = each.value.secret_value.value
-  key_vault_id = azurerm_key_vault.example[keys(local.key_vault)[0]].id
-}
+#   name         = each.value.secret_value.name
+#   value        = each.value.secret_value.value
+#   key_vault_id = azurerm_key_vault.example[keys(local.key_vault)[0]].id
+# }

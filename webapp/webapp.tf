@@ -40,7 +40,7 @@ resource "azurerm_linux_web_app" "example" {
   resource_group_name       = var.common.resource_group_name
   location                  = var.common.location
   service_plan_id           = local.serv_plan_id[each.value.serv_plan_value.name]
-  virtual_network_subnet_id = var.subnet_id
+  virtual_network_subnet_id = var.subnet_id_deleg
 
   site_config {
     worker_count = try(each.value.web_app_value.worker_count, null)

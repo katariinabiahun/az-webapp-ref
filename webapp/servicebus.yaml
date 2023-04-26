@@ -1,10 +1,11 @@
 servicebus:
   namespace:
     srvbusnamespaceicelab:
-      sku: Standard
+      sku: Premium #Private access is only available on Premium namespaces.
+      capacity: 1 #When sku is Premium, capacity can be 1, 2, 4, 8 or 16
   queue:
     tfex_servicebus_queue:
-      enable_partitioning: true
+      enable_partitioning: false
   auth_rule:
     examplerule:
       listen: true

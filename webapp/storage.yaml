@@ -1,5 +1,5 @@
 storage_account:
-  name: stormewbappice
+  name: blstorforlinwebapp
   account_tier: Standard
   account_replication_type: LRS
   account_kind: StorageV2

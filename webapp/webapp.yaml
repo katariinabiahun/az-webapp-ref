@@ -1,5 +1,5 @@
 webapp:
-  name: icelabwebapp
+  name: myilablinwebapp
   worker_count: 3
   service_plan:
     service_plan1:

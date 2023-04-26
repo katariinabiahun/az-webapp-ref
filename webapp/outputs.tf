@@ -13,3 +13,21 @@ output "storage" {
 output "waf_policy" {
   value = local.fd_firewall_policy
 }
+
+
+##for enpoints
+output "app_insights" {
+  value = azurerm_application_insights.example[keys(local.insights)[0]].id
+}
+
+output "kv" {
+  value = azurerm_key_vault.example[keys(local.key_vault)[0]].id
+}
+
+output "srvbus" {
+  value = azurerm_servicebus_namespace.example[keys(local.srvbus_queue)[0]].id
+}
+
+output "pg" {
+  value = azurerm_postgresql_server.example[keys(local.postgresql)[0]].id
+}
