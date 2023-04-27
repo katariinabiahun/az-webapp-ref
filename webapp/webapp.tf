@@ -42,8 +42,27 @@ resource "azurerm_linux_web_app" "example" {
   service_plan_id           = local.serv_plan_id[each.value.serv_plan_value.name]
   virtual_network_subnet_id = var.subnet_id_deleg
 
+  https_only = true
+
   site_config {
     worker_count = try(each.value.web_app_value.worker_count, null)
+
+    ftps_state          = "Disabled"
+    minimum_tls_version = "1.2"
+    ip_restriction {
+      service_tag               = "AzureFrontDoor.Backend"
+      ip_address                = null
+      virtual_network_subnet_id = null
+      action                    = "Allow"
+      priority                  = 100
+      headers = [{
+        x_azure_fdid      = [azurerm_cdn_frontdoor_profile.example[keys(local.fd_profile)[0]].resource_guid]
+        x_fd_health_probe = []
+        x_forwarded_for   = []
+        x_forwarded_host  = []
+      }]
+      name = "Allow traffic from Front Door"
+    }
   }
 
   app_settings = {
@@ -61,5 +80,14 @@ resource "azurerm_linux_web_app" "example" {
       type  = connection_string.value.connstr_value.type
       value = azurerm_servicebus_queue_authorization_rule.example[keys(local.srvbus_queue)[0]].primary_connection_string
     }
+  }
+}
+
+resource "azurerm_app_service_connection" "example" {
+  name               = "srvconnwebapptostorb" #Resource name can only contain letters, numbers (0-9), periods ('.'), and underscores ('_'). The length must not be more than 60 characters.
+  app_service_id     = azurerm_linux_web_app.example[keys(local.webapp)[0]].id
+  target_resource_id = azurerm_storage_account.example[keys(local.blob_stor)[0]].id
+  authentication {
+    type = "systemAssignedIdentity"
   }
 }

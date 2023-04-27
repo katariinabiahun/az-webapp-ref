@@ -20,16 +20,16 @@ locals {
     ]
   ]) : v.snet_name => v }
 
-  pip = { for v in flatten([for vnet_name, vnet_value in local.vnets :
-    [for pip_name, pip_value in try(vnet_value.public_ip, {}) :
-      {
-        vnet_name  = vnet_name
-        vnet_value = vnet_value
-        pip_name   = pip_name
-        pip_value  = pip_value
-      }
-    ]
-  ]) : v.pip_name => v }
+  # pip = { for v in flatten([for vnet_name, vnet_value in local.vnets :
+  #   [for pip_name, pip_value in try(vnet_value.public_ip, {}) :
+  #     {
+  #       vnet_name  = vnet_name
+  #       vnet_value = vnet_value
+  #       pip_name   = pip_name
+  #       pip_value  = pip_value
+  #     }
+  #   ]
+  # ]) : v.pip_name => v }
 
   # lb = { for v in flatten([for vnet_name, vnet_value in local.vnets :
   #   [for lb_name, lb_value in try(vnet_value.lb, {}) :
@@ -128,15 +128,15 @@ resource "azurerm_subnet" "example" {
   ]
 }
 
-resource "azurerm_public_ip" "example" {
-  for_each = local.pip
+# resource "azurerm_public_ip" "example" {
+#   for_each = local.pip
 
-  name                = each.key
-  sku                 = try(each.value.pip_value.sku, null)
-  location            = var.common.location
-  resource_group_name = var.common.resource_group_name
-  allocation_method   = each.value.pip_value.allocation_method
-}
+#   name                = each.key
+#   sku                 = try(each.value.pip_value.sku, null)
+#   location            = var.common.location
+#   resource_group_name = var.common.resource_group_name
+#   allocation_method   = each.value.pip_value.allocation_method
+# }
 
 # resource "azurerm_lb" "example" {
 #   for_each = local.lb

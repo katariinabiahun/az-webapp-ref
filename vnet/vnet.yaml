@@ -48,10 +48,10 @@ vnet:
       is_manual_connection: false
       subresource_names:
         - "postgresqlServer"
-  public_ip:
-    example-api:
-      sku: Standard
-      allocation_method: Static
+  # public_ip:
+  #   example-api:
+  #     sku: Standard
+  #     allocation_method: Static
   # lb:
   #   example-lb:
   #     sku: Standard

@@ -14,6 +14,14 @@ output "waf_policy" {
   value = local.fd_firewall_policy
 }
 
+#app insights
+output "instrumentation_key" {
+  value = azurerm_application_insights.example[keys(local.insights)[0]].instrumentation_key
+}
+
+output "app_id" {
+  value = azurerm_application_insights.example[keys(local.insights)[0]].app_id
+}
 
 ##for enpoints
 output "app_insights" {

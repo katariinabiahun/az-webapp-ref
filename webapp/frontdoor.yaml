@@ -69,7 +69,7 @@ frontdoor:
               operator: IPMatch
               negation_condition: false
               match_values:
-                - "10.0.1.0/24"
+                - "192.168.1.0/24"
                 - "10.0.0.0/24"
         Rule2:
           enabled: true
@@ -86,15 +86,15 @@ frontdoor:
               match_values:
                 - "192.168.1.0/24"
             match_condition2:
-              match_variable: "RequestHeader"
-              selector: "UserAgent"
-              operator: "Contains"
+              match_variable: RequestHeader
+              selector: UserAgent
+              operator: Contains
               negation_condition: false
               match_values:
-                - "windows"
+                - windows
               transforms:
-                - "Lowercase"
-                -  "Trim"
+                - Lowercase
+                - Trim
       managed_rule:
         managed_rule1:
           type: Microsoft_BotManagerRuleSet
