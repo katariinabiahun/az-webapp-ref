@@ -11,3 +11,8 @@ servicebus:
       listen: true
       send: true
       manage: true #if `manage` is set both `listen` and `send` must be set to true too
+  network_rule_set:
+    set1:
+      default_action: Deny
+      public_network_access_enabled: false
+      ignore_missing_vnet_service_endpoint: false

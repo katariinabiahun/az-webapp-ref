@@ -1,18 +1,57 @@
 key_vault:
-  name: mykvforwebarch
+  name: mykvforwebarchh
   sku_name: premium
   soft_delete_retention_days: 7
-  key_permissions:
-    - "Create"
-    - "Delete"
-    - "Get"
-    - "Purge"
-    - "Recover"
-    - "Update"
-    - "GetRotationPolicy"
-    - "SetRotationPolicy"
-  secret_permissions:
-    - "Set"
+  purge_protection_enabled: true
+  access_policy:
+    user:
+      key_permissions:
+        - "Create"
+        - "Delete"
+        - "Get"
+        - "Purge"
+        - "Recover"
+        - "Update"
+        - "GetRotationPolicy"
+        - "SetRotationPolicy"
+        - "List"
+        - "Restore"
+        - "UnwrapKey"
+        - "WrapKey"
+        - "Encrypt"
+        - "Decrypt"
+        - "Sign"
+        - "Verify"
+      secret_permissions:
+        - "Set"
+        - "Get"
+    storage:
+      key_permissions:
+        - "Create"
+        - "Get"
+        - "List"
+        - "Restore"
+        - "Recover"
+        - "UnwrapKey"
+        - "WrapKey"
+        - "Purge"
+        - "Encrypt"
+        - "Decrypt"
+        - "Sign"
+        - "Verify"
+      secret_permissions:
+        - "Get"
+  key:
+    tfex-key:
+      key_type: RSA
+      key_size: 2048
+      key_opts:
+        - "decrypt"
+        - "encrypt"
+        - "sign"
+        - "unwrapKey"
+        - "verify"
+        - "wrapKey"
   # secret:
   #   secret1:
   #     name: mypostgredbkvsecrt

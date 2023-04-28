@@ -40,15 +40,16 @@ resource "azurerm_storage_account" "example" {
     error_404_document = each.value.stat_value.error_404_document
   }
 
+  #for kv
   identity {
-    type = "SystemAssigned"
+    type = each.value.stor_value.identity_type
   }
 }
 
 resource "azurerm_storage_account_customer_managed_key" "example" {
   storage_account_id = azurerm_storage_account.example[keys(local.blob_stor)[0]].id
   key_vault_id       = azurerm_key_vault.example[keys(local.key_vault)[0]].id
-  key_name           = azurerm_key_vault_key.example.name
+  key_name           = azurerm_key_vault_key.example[keys(local.key)[0]].name
 }
 
 resource "azurerm_storage_blob" "example" {

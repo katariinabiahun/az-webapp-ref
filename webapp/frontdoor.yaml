@@ -7,6 +7,7 @@ frontdoor:
       enabled: true
   origin_group:
     example-originGroup:
+      session_affinity_enabled: true
       additional_latency_in_milliseconds: 0
       sample_size: 16
       successful_samples_required: 3
@@ -37,6 +38,7 @@ frontdoor:
       supported_protocols:
         - "Http"
         - "Https"
+      link_to_default_domain: true
       cache:
         cache1:
           query_string_caching_behavior: "IgnoreSpecifiedQueryStrings"

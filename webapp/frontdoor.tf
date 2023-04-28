@@ -81,21 +81,6 @@ locals {
     ]
   ]) : join("-", [v.fpol_name, v.crule_name, v.matchcond_name, v.mrule_name]) => v }
 
-  # mrule = { for v in flatten([for frontdoor_name, frontdoor_value in local.frontdoor :
-  #   [for fpol_name, fpol_value in try(frontdoor_value.firewall_policy, {}) :
-  #     [for mrule_name, mrule_value in try(fpol_value.managed_rule, {}) :
-  #       {
-  #         frontdoor_name  = frontdoor_name
-  #         frontdoor_value = frontdoor_value
-  #         fpol_name       = fpol_name
-  #         fpol_value      = fpol_value
-  #         mrule_name      = mrule_name
-  #         mrule_value     = mrule_value
-  #       }
-  #     ]
-  #   ]
-  # ]) : join("-", [v.fpol_name, v.mrule_name]) => v }
-
   fd_security_policy = { for v in flatten([for frontdoor_name, frontdoor_value in local.frontdoor :
     [for secpol_name, secpol_value in try(frontdoor_value.security_policy, {}) :
       {
@@ -132,19 +117,12 @@ resource "azurerm_cdn_frontdoor_origin_group" "example" {
 
   name                     = each.key
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.example[keys(local.fd_profile)[0]].id
-  session_affinity_enabled = true
+  session_affinity_enabled = each.value.orgr_value.session_affinity_enabled
 
   load_balancing {
     additional_latency_in_milliseconds = try(each.value.orgr_value.additional_latency_in_milliseconds, null)
     sample_size                        = try(each.value.orgr_value.sample_size, null)
     successful_samples_required        = try(each.value.orgr_value.successful_samples_required, null)
-  }
-
-  health_probe {
-    path                = "/"
-    request_type        = "HEAD"
-    protocol            = "Https"
-    interval_in_seconds = 100
   }
 }
 
@@ -179,7 +157,7 @@ resource "azurerm_cdn_frontdoor_route" "example" {
   patterns_to_match      = each.value.route_value.patterns_to_match
   supported_protocols    = each.value.route_value.supported_protocols
 
-  link_to_default_domain = true
+  link_to_default_domain = each.value.route_value.link_to_default_domain
 
   cache {
     query_string_caching_behavior = try(each.value.cache_value.query_string_caching_behavior, null)
@@ -188,73 +166,6 @@ resource "azurerm_cdn_frontdoor_route" "example" {
     content_types_to_compress     = try(each.value.cache_value.content_types_to_compress, null)
   }
 }
-
-# resource "azurerm_frontdoor" "example" {
-#   name                = "example-FrontDoor"
-#   resource_group_name = var.common.resource_group_name
-
-#   routing_rule {
-#     name               = "exampleRoutingRule1"
-#     accepted_protocols = ["Http", "Https"]
-#     patterns_to_match  = ["/*"]
-#     frontend_endpoints = ["exampleFrontendEndpoint1"]
-#     forwarding_configuration {
-#       forwarding_protocol = "MatchRequest"
-#       backend_pool_name   = "exampleBackendBing"
-#     }
-#   }
-
-#   backend_pool_load_balancing {
-#     name                        = "exampleLoadBalancingSettings1"
-#     sample_size                 = 4
-#     successful_samples_required = 2
-#   }
-
-#   backend_pool_health_probe {
-#     name                = "exampleHealthProbeSetting1"
-#     path                = "/"
-#     protocol            = "Http"
-#     interval_in_seconds = 120
-#   }
-
-#   backend_pool {
-#     name = "exampleBackendBing"
-
-#     backend {
-#       host_header = "webappforfd.azurewebsites.net"
-#       address     = "webappforfd.azurewebsites.net"
-#       http_port   = 80
-#       https_port  = 443
-#       priority    = 1
-#       weight      = 50
-#       enabled     = true
-#     }
-
-#     backend {
-#       host_header = "storaccforfd.blob.core.windows.net"
-#       address     = "storaccforfd.blob.core.windows.net"
-#       http_port   = 80
-#       https_port  = 443
-#       priority    = 1
-#       weight      = 50
-#       enabled     = true
-#     }
-
-#     load_balancing_name = "exampleLoadBalancingSettings1"
-#     health_probe_name   = "exampleHealthProbeSetting1"
-#   }
-
-#   frontend_endpoint {
-#     name                     = "exampleFrontendEndpoint1"
-#     host_name                = "example-FrontDoor.azurefd.net"
-#     session_affinity_enabled = false
-#   }
-
-#   backend_pool_settings {
-#     enforce_backend_pools_certificate_name_check = true
-#     backend_pools_send_receive_timeout_seconds   = 30
-#   }
-# }
 
 resource "azurerm_cdn_frontdoor_firewall_policy" "example" {
   for_each = local.fd_firewall_policy

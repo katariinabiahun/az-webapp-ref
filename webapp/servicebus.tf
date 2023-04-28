@@ -20,6 +20,16 @@ locals {
       ]
     ]
   ]) : join("-", [v.srvbus_name, v.namespace_name, v.queue_name, v.auth_rule_name]) => v }
+
+  net_rset = { for k, v in flatten([for srvbus_name, srvbus_value in local.srv_bus :
+    [for rset_name, rset_value in try(srvbus_value.network_rule_set, {}) :
+      {
+        srvbus_name = srvbus_name
+        rset_name   = rset_name
+        rset_value  = rset_value
+      }
+    ]
+  ]) : join("-", [v.srvbus_name, v.rset_name]) => v }
 }
 
 resource "azurerm_servicebus_namespace" "example" {
@@ -52,14 +62,17 @@ resource "azurerm_servicebus_queue_authorization_rule" "example" {
   manage = try(each.value.auth_rule_value.manage, null)
 }
 
+#for endpoint
 resource "azurerm_servicebus_namespace_network_rule_set" "example" {
+  for_each = local.net_rset
+
   namespace_id = azurerm_servicebus_namespace.example[keys(local.srvbus_queue)[0]].id
 
-  default_action                = "Deny"
-  public_network_access_enabled = false
+  default_action                = each.value.rset_value.default_action
+  public_network_access_enabled = each.value.rset_value.public_network_access_enabled
 
   network_rules {
     subnet_id                            = var.subnet_id_privlink
-    ignore_missing_vnet_service_endpoint = false
+    ignore_missing_vnet_service_endpoint = each.value.rset_value.ignore_missing_vnet_service_endpoint
   }
 }

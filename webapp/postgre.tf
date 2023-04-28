@@ -40,8 +40,7 @@ resource "azurerm_postgresql_server" "example" {
   administrator_login_password     = try(each.value.server_value.administrator_login_password, null)
   version                          = each.value.server_value.version
   ssl_enforcement_enabled          = each.value.server_value.ssl_enforcement_enabled
-  ssl_minimal_tls_version_enforced = "TLS1_2"
-  #public_network_access_enabled    = false
+  ssl_minimal_tls_version_enforced = each.value.server_value.ssl_minimal_tls_version_enforced
 }
 
 resource "azurerm_postgresql_database" "example" {
@@ -54,7 +53,7 @@ resource "azurerm_postgresql_database" "example" {
   collation           = each.value.db_value.collation
 }
 
-#1
+# the developers/admins IP’s
 resource "azurerm_postgresql_firewall_rule" "example" {
   for_each = local.postgresql
 

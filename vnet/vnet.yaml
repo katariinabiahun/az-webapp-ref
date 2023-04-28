@@ -23,6 +23,7 @@ vnet:
   monitor_private_link_scope:
     scope1:
       name: example-ampls
+      service_name: isgnameforscopesrv
   private_endpoint:
     insights:
       name: appinstomonendpoint
@@ -48,25 +49,3 @@ vnet:
       is_manual_connection: false
       subresource_names:
         - "postgresqlServer"
-  # public_ip:
-  #   example-api:
-  #     sku: Standard
-  #     allocation_method: Static
-  # lb:
-  #   example-lb:
-  #     sku: Standard
-  # private_link_service:
-  #   example-privatelink:
-  #     auto_approval_subscription_ids:
-  #       - "00000000-0000-0000-0000-000000000000"
-  #     visibility_subscription_ids:
-  #       - "00000000-0000-0000-0000-000000000000"
-  #     nat_ip_configuration:
-  #       primary:
-  #         private_ip_address: "10.0.0.17"
-  #         private_ip_address_version: IPv4
-  #         primary: true
-  #       secondary:
-  #         private_ip_address: "10.0.0.18"
-  #         private_ip_address_version: IPv4
-  #         primary: false

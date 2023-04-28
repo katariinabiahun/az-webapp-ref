@@ -1,9 +1,18 @@
 webapp:
   name: myilablinwebapp
-  worker_count: 3
+  site_config:
+    worker_count: 3
+    ftps_state: Disabled
+    minimum_tls_version: "1.2"
+    ip_restriction:
+      name: "Allow traffic from Front Door"
+      service_tag: "AzureFrontDoor.Backend"
+      ip_address: null
+      virtual_network_subnet_id: null
+      action: "Allow"
+      priority: 100
   service_plan:
-    service_plan1:
-      name: appserviceplan
+    appserviceplan:
       os_type: Linux
       sku_name: P1v2
       worker_count: 2
@@ -12,3 +21,6 @@ webapp:
         connstr1:
           name: servicebusconnstr
           type: ServiceBus
+  app_service_connection:
+    srvconnwebapptostorb:
+      authentication_type: systemAssignedIdentity
