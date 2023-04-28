@@ -31,7 +31,7 @@ locals {
         conn_value  = conn_value
       }
     ]
-  ]) : join("-", [v.webapp_name, v.conn_name]) => v }
+  ]) : v.conn_name => v }
 }
 
 resource "azurerm_service_plan" "example" {
