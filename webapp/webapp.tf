@@ -80,6 +80,11 @@ resource "azurerm_linux_web_app" "example" {
     }
   }
 
+  #forkv
+  identity {
+    type = each.value.webapp_value.identity.type
+  }
+
   app_settings = {
     APPINSIGHTS_INSTRUMENTATIONKEY             = azurerm_application_insights.example[keys(local.insights)[0]].instrumentation_key
     APPLICATIONINSIGHTS_CONNECTION_STRING      = azurerm_application_insights.example[keys(local.insights)[0]].connection_string

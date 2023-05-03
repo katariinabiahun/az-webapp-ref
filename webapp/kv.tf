@@ -3,6 +3,13 @@ locals {
   kv = yamldecode(file("${path.module}/kv.yaml"))
 
   key_vault = { for k, v in flatten([for kv_name, kv_value in local.kv :
+    {
+      kv_name  = kv_name
+      kv_value = kv_value
+    }
+  ]) : v.kv_name => v }
+
+  kv_accpol = { for k, v in flatten([for kv_name, kv_value in local.kv :
     [for access_name, access_value in try(kv_value.access_policy, {}) :
       {
         kv_name      = kv_name
@@ -11,7 +18,7 @@ locals {
         access_value = access_value
       }
     ]
-  ]) : join("-", [v.kv_name, v.access_name]) => v }
+  ]) : v.access_name => v }
 
   key = { for k, v in flatten([for kv_name, kv_value in local.kv :
     [for key_name, key_value in try(kv_value.key, {}) :
@@ -33,6 +40,11 @@ locals {
   #   ]
   # ]) : join("-", [v.kv_name, v.secret_name]) => v }
 
+  object_ids = {
+    "storage" = azurerm_storage_account.example[keys(local.blob_stor)[0]].identity.0.principal_id
+    "user"    = data.azurerm_client_config.current.object_id
+    "webapp"  = azurerm_linux_web_app.example[keys(local.webapp)[0]].identity.0.principal_id
+  }
   #stor_obj_id = azurerm_storage_account.example[keys(local.blob_stor)[0]].identity.0.principal_id
 }
 
@@ -54,7 +66,7 @@ resource "azurerm_key_vault" "example" {
 
   #   content {
   #     tenant_id = data.azurerm_client_config.current.tenant_id
-  #     object_id = each.value.access_name == "storage" ? azurerm_storage_account.example[keys(local.blob_stor)[0]].identity.0.principal_id : data.azurerm_client_config.current.object_id
+  #     object_id = lookup(local.object_ids, each.value.access_name)
 
   #     key_permissions    = each.value.access_value.key_permissions
   #     secret_permissions = each.value.access_value.secret_permissions
@@ -71,14 +83,18 @@ resource "azurerm_key_vault" "example" {
 # }
 
 
-# resource "azurerm_key_vault_access_policy" "storage" {
-#   key_vault_id = azurerm_key_vault.example[keys(local.key_vault)[0]].id
-#   tenant_id    = data.azurerm_client_config.current.tenant_id
-#   object_id    = azurerm_storage_account.example[keys(local.blob_stor)[0]].identity.0.principal_id
+resource "azurerm_key_vault_access_policy" "example" {
+  for_each = local.kv_accpol
 
-#   key_permissions    = ["Get", "Create", "List", "Restore", "Recover", "UnwrapKey", "WrapKey", "Purge", "Encrypt", "Decrypt", "Sign", "Verify"]
-#   secret_permissions = ["Get"]
-# }
+  key_vault_id = azurerm_key_vault.example[keys(local.key_vault)[0]].id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = lookup(local.object_ids, each.key)
+
+  key_permissions    = each.value.access_value.key_permissions
+  secret_permissions = each.value.access_value.secret_permissions
+
+
+}
 
 # data "azurerm_client_config" "currenttwo" {}
 
@@ -113,6 +129,6 @@ resource "azurerm_key_vault_key" "example" {
   depends_on = [
     # azurerm_key_vault_access_policy.client,
 
-    azurerm_key_vault.example #azurerm_key_vault_access_policy.storage
+    azurerm_key_vault_access_policy.example #azurerm_key_vault.example #azurerm_key_vault_access_policy.storage
   ]
 }

@@ -11,6 +11,8 @@ webapp:
       virtual_network_subnet_id: null
       action: "Allow"
       priority: 100
+  identity:
+    type: SystemAssigned
   service_plan:
     appserviceplan:
       os_type: Linux
