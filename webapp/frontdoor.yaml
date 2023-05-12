@@ -12,8 +12,8 @@ frontdoor:
       sample_size: 16
       successful_samples_required: 3
   origin:
-    storage:
-      name: example-origin-storage
+    statsite:
+      name: example-origin-statsite
       enabled: true
       certificate_name_check_enabled: false
       http_port: 80

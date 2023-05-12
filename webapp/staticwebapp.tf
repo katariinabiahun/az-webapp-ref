@@ -1,32 +1,29 @@
 locals {
 
-  # storage = yamldecode(file("${path.module}/storage.yaml"))
+  staticwebapps = yamldecode(file("${path.module}/staticwebapp.yaml"))
 
-  # blob_stor = { for v in flatten([for stor_name, stor_value in local.storage :
-  #   [for stat_name, stat_value in try(stor_value.static_website, {}) :
-  #     {
-  #       stor_name  = stor_name
-  #       stor_value = stor_value
-  #       stat_name  = stat_name
-  #       stat_value = stat_value
-  #     }
-  #   ]
-  # ]) : join("-", [v.stor_name, v.stat_name]) => v }
-
-  # blob = { for v in flatten([for stor_name, stor_value in local.storage :
-  #   [for blob_name, blob_value in try(stor_value.storage_blob, {}) :
-  #     {
-  #       stor_name  = stor_name
-  #       stor_value = stor_value
-  #       blob_name  = blob_name
-  #       blob_value = blob_value
-  #     }
-  #   ]
-  # ]) : v.blob_name => v }
+  staticwebapp = { for v in flatten([for stat_name, stat_value in local.staticwebapps :
+    {
+      stat_name  = stat_name
+      stat_value = stat_value
+    }
+  ]) : v.stat_name => v }
 }
 
 resource "azurerm_static_site" "example" {
-  name                = "staticwebsite"
+  for_each = local.staticwebapp
+
+  name                = each.value.stat_value.name
   location            = var.common.location
   resource_group_name = var.common.resource_group_name
+
+  sku_tier = each.value.stat_value.sku_tier
+  sku_size = each.value.stat_value.sku_size
+  identity {
+    type = each.value.stat_value.identity_type
+  }
 }
+
+
+# After the Static Site is provisioned, you'll need to associate your target repository, which contains your web app, to the Static Site, by following the Azure Static Site document.
+# https://learn.microsoft.com/en-us/azure/static-web-apps/build-configuration?tabs=github-actions

@@ -31,9 +31,9 @@ locals {
   ]) : join("-", [v.kv_name, v.key_name]) => v }
 
   object_ids = {
-    "storage" = azurerm_static_site.example.identity.0.principal_id #storage >> static web site
-    "user"    = data.azurerm_client_config.current.object_id
-    "webapp"  = azurerm_linux_web_app.example[keys(local.webapp)[0]].identity.0.principal_id
+    "statsite" = azurerm_static_site.example[keys(local.staticwebapp)[0]].identity.0.principal_id
+    "user"     = data.azurerm_client_config.current.object_id
+    "webapp"   = azurerm_linux_web_app.example[keys(local.webapp)[0]].identity.0.principal_id
   }
 }
 
