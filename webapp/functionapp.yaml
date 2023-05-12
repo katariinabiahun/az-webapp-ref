@@ -1,5 +1,5 @@
-webapp:
-  name: myilablinwebapp
+functionapp:
+  name: myicelablinfuncapp
   site_config:
     worker_count: 3
     ftps_state: Disabled
@@ -16,7 +16,7 @@ webapp:
   service_plan:
     appserviceplan:
       os_type: Linux
-      sku_name: P1v2
+      sku_name: Y1
       worker_count: 2
       per_site_scaling_enabled: true
       connconnection_string:

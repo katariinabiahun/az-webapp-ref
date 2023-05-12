@@ -33,7 +33,7 @@ locals {
   object_ids = {
     "storage" = azurerm_storage_account.example[keys(local.blob_stor)[0]].identity.0.principal_id
     "user"    = data.azurerm_client_config.current.object_id
-    "webapp"  = azurerm_linux_web_app.example[keys(local.webapp)[0]].identity.0.principal_id
+    "webapp"  = azurerm_linux_function_app.example[keys(local.func)[0]].identity.0.principal_id
   }
 }
 
