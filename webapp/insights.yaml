@@ -1,6 +1,6 @@
 application_insights:
   name: tf-test-appinsights
-  application_type: web
+  application_type: "Node.JS"
   app_sett:
     extension_version: "~3"
   log_analytics_workspace:

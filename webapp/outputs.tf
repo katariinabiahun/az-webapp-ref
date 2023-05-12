@@ -1,5 +1,5 @@
 output "mywebapp" {
-  value = azurerm_linux_web_app.example[keys(local.webapp)[0]].default_hostname
+  value = azurerm_linux_function_app.example[keys(local.func)[0]].default_hostname
 }
 
 output "srvbus_connstr" {
@@ -38,4 +38,8 @@ output "srvbus" {
 
 output "pg" {
   value = azurerm_postgresql_server.example[keys(local.postgresql)[0]].id
+}
+
+output "func" {
+  value = azurerm_linux_function_app.example[keys(local.func)[0]].id
 }

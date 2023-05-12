@@ -43,6 +43,8 @@ locals {
     "keyvault"   = var.kv
     "servicebus" = var.srvbus
     "postgresql" = var.pg
+
+    "functionapp" = var.func
   }
 }
 
@@ -81,6 +83,12 @@ resource "azurerm_subnet" "example" {
   depends_on = [
     azurerm_virtual_network.example
   ]
+}
+
+##?
+resource "azurerm_app_service_virtual_network_swift_connection" "example" {
+  app_service_id = lookup(local.pvt_conn_ids, "functionapp")
+  subnet_id      = azurerm_subnet.example[keys(local.snet)[0]].id
 }
 
 resource "azurerm_monitor_private_link_scope" "example" {

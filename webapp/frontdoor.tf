@@ -93,7 +93,7 @@ locals {
 
   origin_hosts = {
     "storage" = azurerm_storage_account.example[keys(local.blob_stor)[0]].primary_web_host
-    "webapp"  = azurerm_linux_web_app.example[keys(local.webapp)[0]].default_hostname
+    "webapp"  = azurerm_linux_function_app.example[keys(local.func)[0]].default_hostname
   }
 }
 

@@ -33,7 +33,7 @@ locals {
   object_ids = {
     "storage" = azurerm_storage_account.example[keys(local.blob_stor)[0]].identity.0.principal_id
     "user"    = data.azurerm_client_config.current.object_id
-    "webapp"  = azurerm_linux_web_app.example[keys(local.webapp)[0]].identity.0.principal_id
+    "webapp"  = azurerm_linux_function_app.example[keys(local.func)[0]].identity.0.principal_id
   }
 }
 
@@ -63,11 +63,11 @@ resource "azurerm_key_vault_access_policy" "example" {
   secret_permissions = each.value.access_value.secret_permissions
 }
 
-resource "azurerm_role_assignment" "example" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Key Vault Crypto Officer"
-  principal_id         = data.azurerm_client_config.current.object_id
-}
+# resource "azurerm_role_assignment" "example" {
+#   scope                = data.azurerm_subscription.primary.id
+#   role_definition_name = "Key Vault Crypto Officer"
+#   principal_id         = data.azurerm_client_config.current.object_id
+# }
 
 resource "azurerm_key_vault_key" "example" {
   for_each = local.key
