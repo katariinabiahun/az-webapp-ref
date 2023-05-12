@@ -92,7 +92,7 @@ locals {
   ]) : join("-", [v.frontdoor_name, v.secpol_name]) => v }
 
   origin_hosts = {
-    "storage" = azurerm_storage_account.example[keys(local.blob_stor)[0]].primary_web_host
+    "storage" = azurerm_static_site.example.default_host_name #storage >> static web site
     "webapp"  = azurerm_linux_web_app.example[keys(local.webapp)[0]].default_hostname
   }
 }

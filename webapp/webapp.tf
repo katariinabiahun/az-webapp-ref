@@ -100,15 +100,3 @@ resource "azurerm_linux_web_app" "example" {
     }
   }
 }
-
-resource "azurerm_app_service_connection" "example" {
-  for_each = local.srv_conn
-
-  name               = each.key
-  app_service_id     = azurerm_linux_web_app.example[keys(local.webapp)[0]].id
-  target_resource_id = azurerm_storage_account.example[keys(local.blob_stor)[0]].id
-
-  authentication {
-    type = each.value.conn_value.authentication_type
-  }
-}

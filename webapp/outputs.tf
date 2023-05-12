@@ -6,9 +6,9 @@ output "srvbus_connstr" {
   value = nonsensitive(azurerm_servicebus_queue_authorization_rule.example[keys(local.srvbus_queue)[0]].primary_connection_string)
 }
 
-output "storage" {
-  value = azurerm_storage_account.example[keys(local.blob_stor)[0]].primary_web_host
-}
+# output "storage" {
+#   value = azurerm_storage_account.example[keys(local.blob_stor)[0]].primary_web_host
+# }
 
 output "waf_policy" {
   value = local.fd_firewall_policy
