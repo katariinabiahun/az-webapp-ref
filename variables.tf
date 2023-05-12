@@ -1,11 +1,11 @@
 variable "location" {
   type        = string
-  description = "location"
+  description = "Location"
   default     = "westeurope"
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Resource group name. Optional"
+  description = "Resource group name"
   default     = "ice"
 }

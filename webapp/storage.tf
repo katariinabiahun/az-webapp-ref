@@ -28,19 +28,18 @@ locals {
 resource "azurerm_storage_account" "example" {
   for_each = local.blob_stor
 
-  name                     = trimspace(lower(each.value.stor_value.name)) #unique
+  name                     = trimspace(lower(each.value.stor_value.name))
   location                 = var.common.location
   resource_group_name      = var.common.resource_group_name
   account_tier             = each.value.stor_value.account_tier
   account_replication_type = each.value.stor_value.account_replication_type
-  account_kind             = each.value.stor_value.account_kind #static_website can only be set when the account_kind is set to StorageV2 or BlockBlobStorage.
+  account_kind             = each.value.stor_value.account_kind
 
   static_website {
     index_document     = each.value.stat_value.index_document
     error_404_document = each.value.stat_value.error_404_document
   }
 
-  #for kv
   identity {
     type = each.value.stor_value.identity_type
   }
@@ -56,7 +55,7 @@ resource "azurerm_storage_blob" "example" {
   for_each = local.blob
 
   name                   = each.key
-  storage_account_name   = trimspace(lower(each.value.stor_value.name)) #azurerm_storage_account.example[each.value.stor_name].name
+  storage_account_name   = trimspace(lower(each.value.stor_value.name))
   storage_container_name = each.value.blob_value.storage_container_name
   type                   = each.value.blob_value.type
   source                 = each.value.blob_value.source

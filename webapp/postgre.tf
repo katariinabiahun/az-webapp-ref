@@ -53,7 +53,6 @@ resource "azurerm_postgresql_database" "example" {
   collation           = each.value.db_value.collation
 }
 
-# the developers/admins IP’s
 resource "azurerm_postgresql_firewall_rule" "example" {
   for_each = local.postgresql
 

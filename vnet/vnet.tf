@@ -65,7 +65,6 @@ resource "azurerm_subnet" "example" {
   private_link_service_network_policies_enabled = try(each.value.snet_value.private_link_service_network_policies_enabled, null)
   service_endpoints                             = try(each.value.snet_value.service_endpoints, null)
 
-  #for webapp
   dynamic "delegation" {
     for_each = can(each.value.snet_value.delegation) ? toset([1]) : toset([])
 

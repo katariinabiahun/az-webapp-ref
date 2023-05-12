@@ -61,9 +61,9 @@ resource "azurerm_linux_web_app" "example" {
   site_config {
     worker_count = try(each.value.webapp_value.site_config.worker_count, null)
 
-    #for fd
     ftps_state          = each.value.webapp_value.site_config.ftps_state
     minimum_tls_version = each.value.webapp_value.site_config.minimum_tls_version
+
     ip_restriction {
       service_tag               = each.value.webapp_value.site_config.ip_restriction.service_tag
       ip_address                = each.value.webapp_value.site_config.ip_restriction.ip_address
@@ -80,7 +80,6 @@ resource "azurerm_linux_web_app" "example" {
     }
   }
 
-  #forkv
   identity {
     type = each.value.webapp_value.identity.type
   }
@@ -91,7 +90,6 @@ resource "azurerm_linux_web_app" "example" {
     ApplicationInsightsAgent_EXTENSION_VERSION = lookup(local.app_insights.application_insights.app_sett, "extension_version")
   }
 
-  #service bus
   dynamic "connection_string" {
     for_each = local.srvplan
 
@@ -103,11 +101,10 @@ resource "azurerm_linux_web_app" "example" {
   }
 }
 
-#for conn to stor acc (frontend)
 resource "azurerm_app_service_connection" "example" {
   for_each = local.srv_conn
 
-  name               = each.key #Resource name can only contain letters, numbers (0-9), periods ('.'), and underscores ('_'). The length must not be more than 60 characters.
+  name               = each.key
   app_service_id     = azurerm_linux_web_app.example[keys(local.webapp)[0]].id
   target_resource_id = azurerm_storage_account.example[keys(local.blob_stor)[0]].id
 

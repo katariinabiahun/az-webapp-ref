@@ -62,7 +62,6 @@ resource "azurerm_servicebus_queue_authorization_rule" "example" {
   manage = try(each.value.auth_rule_value.manage, null)
 }
 
-#for endpoint
 resource "azurerm_servicebus_namespace_network_rule_set" "example" {
   for_each = local.net_rset
 
