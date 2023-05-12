@@ -9,3 +9,5 @@ variable "app_insights" {}
 variable "kv" {}
 variable "srvbus" {}
 variable "pg" {}
+
+variable "func" {}

@@ -39,3 +39,7 @@ output "srvbus" {
 output "pg" {
   value = azurerm_postgresql_server.example[keys(local.postgresql)[0]].id
 }
+
+output "func" {
+  value = azurerm_linux_function_app.example[keys(local.func)[0]].id
+}

@@ -94,6 +94,8 @@ resource "azurerm_linux_function_app" "example" {
     #for stor acc
     #WEBSITE_CONTENTAZUREFILECONNECTIONSTRING = azurerm_storage_account.example[keys(local.blob_stor)[0]].primary_access_key
     #AzureWebJobsStorage = storage_account_access_key,
+
+    ServiceBusConnection = azurerm_servicebus_queue_authorization_rule.example[keys(local.srvbus_queue)[0]].primary_connection_string
   }
 
   dynamic "connection_string" {

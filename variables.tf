@@ -7,5 +7,5 @@ variable "location" {
 variable "resource_group_name" {
   type        = string
   description = "Resource group name"
-  default     = "ice"
+  default     = "rg-icelab-katariina-test"
 }

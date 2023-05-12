@@ -21,4 +21,6 @@ module "vnet" {
   kv           = module.tf_az_api.kv
   srvbus       = module.tf_az_api.srvbus
   pg           = module.tf_az_api.pg
+
+  func = module.tf_az_api.func
 }
