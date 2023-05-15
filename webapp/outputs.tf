@@ -18,6 +18,10 @@ output "app_id" {
   value = azurerm_application_insights.example[keys(local.insights)[0]].app_id
 }
 
+output "static_api_key" {
+  value = nonsensitive(azurerm_static_site.example[keys(local.staticwebapp)[0]].api_key)
+}
+
 # The following values is used to set the private endpoints in the vnet module.
 
 output "app_insights" {
