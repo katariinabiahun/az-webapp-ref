@@ -31,9 +31,9 @@ locals {
   ]) : join("-", [v.kv_name, v.key_name]) => v }
 
   object_ids = {
-    "storage" = azurerm_storage_account.example[keys(local.blob_stor)[0]].identity.0.principal_id
-    "user"    = data.azurerm_client_config.current.object_id
-    "webapp"  = azurerm_linux_web_app.example[keys(local.webapp)[0]].identity.0.principal_id
+    "statsite" = azurerm_static_site.example[keys(local.staticwebapp)[0]].identity.0.principal_id
+    "user"     = data.azurerm_client_config.current.object_id
+    "webapp"   = azurerm_linux_web_app.example[keys(local.webapp)[0]].identity.0.principal_id
   }
 }
 
@@ -61,24 +61,4 @@ resource "azurerm_key_vault_access_policy" "example" {
 
   key_permissions    = each.value.access_value.key_permissions
   secret_permissions = each.value.access_value.secret_permissions
-}
-
-resource "azurerm_role_assignment" "example" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Key Vault Crypto Officer"
-  principal_id         = data.azurerm_client_config.current.object_id
-}
-
-resource "azurerm_key_vault_key" "example" {
-  for_each = local.key
-
-  name         = each.value.key_name
-  key_vault_id = azurerm_key_vault.example[keys(local.key_vault)[0]].id
-  key_type     = each.value.key_value.key_type
-  key_size     = each.value.key_value.key_size
-  key_opts     = each.value.key_value.key_opts
-
-  depends_on = [
-    azurerm_key_vault_access_policy.example
-  ]
 }

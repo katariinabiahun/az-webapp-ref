@@ -1,0 +1,5 @@
+static_site:
+  name: staticwebsite
+  sku_tier: Standard
+  sku_size: Standard
+  identity_type: SystemAssigned

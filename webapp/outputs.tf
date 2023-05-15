@@ -6,10 +6,6 @@ output "srvbus_connstr" {
   value = nonsensitive(azurerm_servicebus_queue_authorization_rule.example[keys(local.srvbus_queue)[0]].primary_connection_string)
 }
 
-output "storage" {
-  value = azurerm_storage_account.example[keys(local.blob_stor)[0]].primary_web_host
-}
-
 output "waf_policy" {
   value = local.fd_firewall_policy
 }
@@ -20,6 +16,10 @@ output "instrumentation_key" {
 
 output "app_id" {
   value = azurerm_application_insights.example[keys(local.insights)[0]].app_id
+}
+
+output "static_api_key" {
+  value = nonsensitive(azurerm_static_site.example[keys(local.staticwebapp)[0]].api_key)
 }
 
 # The following values is used to set the private endpoints in the vnet module.
